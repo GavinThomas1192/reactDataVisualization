@@ -22,7 +22,16 @@
   font-size: large;
 }
 
+.polarChart {
+  max-width: 35%;
+  margin: auto;
+}
+
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
