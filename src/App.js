@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-
+import DayInTheLife from "../src/components/DayInTheLife";
 class App extends Component {
   render() {
     return (
@@ -10,7 +10,10 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">React Data Visualization</h1>
         </header>
-        <p className="App-intro">Hello world</p>
+        <p className="App-intro">Current Wind speed</p>
+        <div className="polarChart">
+          <DayInTheLife />
+        </div>
       </div>
     );
   }
