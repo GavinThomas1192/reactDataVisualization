@@ -23,8 +23,16 @@
 }
 
 .polarChart {
-  max-width: 35%;
-  margin: auto;
+  /* max-width: 35%; */
+  /* margin: auto; */
+}
+
+.polarChartInfo {
+  /* float: right; */
+}
+
+.polarChartContainer {
+  text-align: center;
 }
 
 @keyframes App-logo-spin {

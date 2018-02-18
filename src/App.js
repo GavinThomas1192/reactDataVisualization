@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import DayInTheLife from "../src/components/DayInTheLife";
+import DateAndTimePickers from "../src/components/DatePicker";
+import FloatingActionButtonZoom from "../src/components/InfoDisplay";
+import Grid from "material-ui/Grid";
+
 class App extends Component {
   render() {
     return (
@@ -10,9 +14,21 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">React Data Visualization</h1>
         </header>
-        <p className="App-intro">Current Wind speed</p>
-        <div className="polarChart">
-          <DayInTheLife />
+        <div className="polarChartContainer">
+          <p className="App-intro">Current Wind speed</p>
+          <Grid container spacing={24}>
+            <Grid item xs>
+              <p>Settings</p>
+              <DateAndTimePickers />
+            </Grid>
+            <Grid item xs={6}>
+              <DayInTheLife />
+            </Grid>
+            <Grid item xs>
+              <p>Info</p>
+              {/* <FloatingActionButtonZoom /> */}
+            </Grid>
+          </Grid>
         </div>
       </div>
     );
