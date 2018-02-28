@@ -6,13 +6,19 @@ var express = require("express");
 var bodyParser = require("body-parser");
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
+
+var axios = require("axios");
+var cors = require("cors");
+
 var port = 3001;
 
 // Configure app to use bodyParser to parse json data
 var app = express();
 var server = require("http").createServer(app);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors({ origin: true, credentials: true }));
 
 // Test server is working (GET http://localhost:3001/api)
 app.get("/api/", function(req, res) {
@@ -20,7 +26,6 @@ app.get("/api/", function(req, res) {
 });
 
 // Following is an example to proxy client request to DarkSky forecast API
-console.log(process.env.hello);
 // Please use your own darksky secret key.
 // Get one for free at https://darksky.net/dev/
 // DarkSky returns 403 (forbidden) error for invalid key.
@@ -30,30 +35,16 @@ var url_prefix =
   `${process.env.DARKSKY_SECRET_KEY}` +
   "/";
 app.get("/api/darksky", function(req, res) {
-  try {
-    // Retrieves location coordinates (latitude and longitude) from client request query
-    var coordinates = "47.6062,122.3321";
-    var url = url_prefix + coordinates;
-    console.log("Fetching " + url);
+  // Retrieves location coordinates (latitude and longitude) from client request query
+  var coordinates = "47.6062,122.3321";
+  var url = url_prefix + coordinates;
+  console.log("Fetching " + url);
 
-    fetch(url)
-      .then(function(response) {
-        if (response.status != 200) {
-          res
-            .status(response.status)
-            .json({ message: "Bad response from Dark Sky server" });
-        }
-        return response.json();
-      })
-      .then(function(payload) {
-        res.status(200).json(payload);
-      });
-  } catch (err) {
-    console.log("Errors occurs requesting Dark Sky API", err);
-    res
-      .status(500)
-      .json({ message: "Errors occurs requesting Dark Sky API", details: err });
-  }
+  axios.get(url).then(retrievedDataFromDarkSky => {
+    console.log(retrievedDataFromDarkSky.data);
+    res.status(200);
+    res.send(retrievedDataFromDarkSky.data);
+  });
 });
 
 // Start the server

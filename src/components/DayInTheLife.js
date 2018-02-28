@@ -79,9 +79,9 @@ export default class DayInTheLife extends React.Component {
 
   getWindDataFromUnderground = () => {
     axios
-      .get()
+      .get("http://localhost:3001/api/darksky")
       .then(response => {
-        console.log(response);
+        console.log("this is the response from my express server", response);
       })
       .catch(function(error) {
         console.log(error);
