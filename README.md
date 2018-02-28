@@ -6,7 +6,8 @@
 Below you will find some information on how to perform common tasks.<br>
 You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
-<img src="./src/img/home.jpg" width="500px">
+<img src="./src/img/home.png" width="500px">
+<img src="./src/img/fallout.png" width="500px">
 
 ## Table of Contents
 
