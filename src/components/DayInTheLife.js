@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import {
   VictoryBar,
   VictoryChart,
@@ -72,9 +73,21 @@ export default class DayInTheLife extends React.Component {
   componentDidMount() {
     this.setStateInterval = window.setInterval(() => {
       this.setState({ wind: this.getWindData() });
-    }, 4000);
+    }, 10000);
+    this.getWindDataFromUnderground();
   }
 
+  getWindDataFromUnderground = () => {
+    axios
+      .get()
+      .then(response => {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    // https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid={api_key}
+  };
   getWindData() {
     return Object.keys(directions).map(d => {
       const speed = Math.floor(Math.random() * 17) + 4;
