@@ -77,11 +77,11 @@ export default class DayInTheLife extends React.Component {
   }
 
   componentDidMount() {
-    this.setStateInterval = window.setInterval(() => {
-      this.setState({ wind: this.getWindData() }, function() {
-        console.log("state after getWindData", this.state);
-      });
-    }, 10000);
+    // this.setStateInterval = window.setInterval(() => {
+    //   this.setState({ wind: this.getWindData() }, function() {
+    //     console.log("state after getWindData", this.state);
+    //   });
+    // }, 10000);
   }
 
   componentWillMount() {
