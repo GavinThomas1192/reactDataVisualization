@@ -3,14 +3,15 @@ import PropTypes from "prop-types";
 import { withStyles } from "material-ui/styles";
 import TextField from "material-ui/TextField";
 import Button from "material-ui/Button";
-
+import axios from "axios";
 export default class LocationPicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       location: "",
       locationError: "",
-      date: ""
+      date: "",
+      specificGeoAdress: ""
     };
   }
 
@@ -30,11 +31,34 @@ export default class LocationPicker extends React.Component {
   };
 
   handleSubmit = () => {
-    {
-      this.state.locationError == "" && this.state.location !== ""
-        ? this.props.updateHomeLocation(this.state)
-        : alert("Please enter valid zip code!");
-    }
+    axios
+      .get(
+        `http://maps.googleapis.com/maps/api/geocode/json?address=${
+          this.state.location
+        }&sensor=true`
+      )
+      .then(response => {
+        console.log(
+          "Response from google geolocation api based on zip code",
+          response.data.results[0].geometry.location,
+          response.data.results[0].formatted_address
+        );
+        this.setState(
+          {
+            specificGeoAdress: {
+              name: response.data.results[0].formatted_address,
+              latLong: response.data.results[0].geometry.location
+            }
+          },
+          () => {
+            {
+              this.state.locationError == "" && this.state.location !== ""
+                ? this.props.updateHomeLocation(this.state.specificGeoAdress)
+                : alert("Please enter valid zip code!");
+            }
+          }
+        );
+      });
   };
 
   componentDidUpdate = () => {

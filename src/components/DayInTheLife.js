@@ -9,6 +9,7 @@ import {
   VictoryPolarAxis,
   VictoryStack
 } from "victory";
+import Button from "material-ui/Button";
 
 const directions = {
   0: "E",
@@ -72,85 +73,108 @@ export default class DayInTheLife extends React.Component {
       windNew: [],
       windSpeed: "",
       windBearing: "",
-      windGust: ""
+      windGust: "",
+      homeState: ""
     };
   }
 
   componentDidMount() {
+    console.log("DayInTheLife did mount", this.props);
+
     // this.setStateInterval = window.setInterval(() => {
-    //   this.setState({ wind: this.getWindData() }, function() {
-    //     console.log("state after getWindData", this.state);
-    //   });
-    // }, 10000);
+    //   this.getWindDataFromUnderground();
+    // }, 100000);
   }
 
-  componentWillMount() {
-    this.getWindDataFromUnderground();
+  componentDidUpdate() {
+    console.log("DayInTheLife update", this.props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // {
+    //   nextProps.start
+    //     ? this.setState({ homeState: nextProps.homeState })
+    //     : undefined;
+    // }
+    // console.log("NEXTPROPS", nextProps);
+  }
+
+  handleRefresh = () => {
+    console.log("refreshed");
+  };
   getWindDataFromUnderground = () => {
     axios
-      .get("http://localhost:3001/api/darksky")
+      .post("http://localhost:3001/api/darksky", {
+        lat: this.props.homeState.weatherLocation.latLong.lat,
+        long: this.props.homeState.weatherLocation.latLong.lng
+      })
       .then(response => {
         console.log(
           "this is the response from my express server",
           response.data.currently.windSpeed,
           response.data.currently.windBearing
         );
-        this.setState(
-          {
-            windSpeed: response.data.currently.windSpeed,
-            windBearing: response.data.currently.windBearing,
-            windGust: response.data.currently.windSpeed,
-            windNew: [
-              ...this.state.windNew,
-              {
-                windSpeed: response.data.currently.windSpeed,
-                windGust: response.data.currently.windSpeed + 0.02,
-                windBearing: response.data.currently.windBearing
-              },
-              {
-                windSpeed: response.data.currently.windSpeed,
-                windGust: response.data.currently.windSpeed + 0.02,
-                windBearing: 45
-              },
-              {
-                windSpeed: response.data.currently.windSpeed,
-                windGust: response.data.currently.windSpeed + 0.02,
-                windBearing: 90
-              },
-              {
-                windSpeed: response.data.currently.windSpeed,
-                windGust: response.data.currently.windSpeed + 0.02,
-                windBearing: 135
-              },
-              {
-                windSpeed: response.data.currently.windSpeed,
-                windGust: response.data.currently.windSpeed + 0.02,
-                windBearing: 180
-              },
-              {
-                windSpeed: response.data.currently.windSpeed,
-                windGust: response.data.currently.windSpeed + 0.02,
-                windBearing: 225
-              },
-              {
-                windSpeed: response.data.currently.windSpeed,
-                windGust: response.data.currently.windSpeed + 0.02,
-                windBearing: 270
-              },
-              {
-                windSpeed: response.data.currently.windSpeed,
-                windGust: response.data.currently.windSpeed + 0.02,
-                windBearing: 315
-              }
-            ]
-          },
-          function() {
-            console.log("updated state from my express server", this.state);
-            this.props.updateHomeWeather(response.data);
-          }
-        );
+        {
+          this.state.windNew.length === 0
+            ? this.setState(
+                {
+                  windSpeed: response.data.currently.windSpeed,
+                  windBearing: response.data.currently.windBearing,
+                  windGust: response.data.currently.windSpeed,
+                  windNew: [
+                    ...this.state.windNew,
+                    {
+                      windSpeed: response.data.currently.windSpeed,
+                      windGust: response.data.currently.windSpeed + 0.02,
+                      windBearing: response.data.currently.windBearing
+                    },
+                    {
+                      windSpeed: response.data.currently.windSpeed,
+                      windGust: response.data.currently.windSpeed + 0.02,
+                      windBearing: 45
+                    },
+                    {
+                      windSpeed: response.data.currently.windSpeed,
+                      windGust: response.data.currently.windSpeed + 0.02,
+                      windBearing: 90
+                    },
+                    {
+                      windSpeed: response.data.currently.windSpeed,
+                      windGust: response.data.currently.windSpeed + 0.02,
+                      windBearing: 135
+                    },
+                    {
+                      windSpeed: response.data.currently.windSpeed,
+                      windGust: response.data.currently.windSpeed + 0.02,
+                      windBearing: 180
+                    },
+                    {
+                      windSpeed: response.data.currently.windSpeed,
+                      windGust: response.data.currently.windSpeed + 0.02,
+                      windBearing: 225
+                    },
+                    {
+                      windSpeed: response.data.currently.windSpeed,
+                      windGust: response.data.currently.windSpeed + 0.02,
+                      windBearing: 270
+                    },
+                    {
+                      windSpeed: response.data.currently.windSpeed,
+                      windGust: response.data.currently.windSpeed + 0.02,
+                      windBearing: 315
+                    }
+                  ]
+                },
+                function() {
+                  console.log(
+                    "updated state from my express server",
+                    this.state
+                  );
+                  this.props.updateHomeWeather(response.data);
+                }
+              )
+            : undefined;
+        }
       })
       .catch(function(error) {
         console.log(error);
@@ -170,59 +194,64 @@ export default class DayInTheLife extends React.Component {
 
   render() {
     return (
-      <VictoryChart
-        polar
-        animate={{ duration: 500, onLoad: { duration: 500 } }}
-        theme={VictoryTheme.material}
-        innerRadius={innerRadius}
-        domainPadding={{ y: 10 }}
-        events={[
-          {
-            childName: "all",
-            target: "data",
-            eventHandlers: {
-              onMouseOver: () => {
-                return [
-                  { target: "labels", mutation: () => ({ active: true }) },
-                  { target: "data", mutation: () => ({ active: true }) }
-                ];
-              },
-              onMouseOut: () => {
-                return [
-                  { target: "labels", mutation: () => ({ active: false }) },
-                  { target: "data", mutation: () => ({ active: false }) }
-                ];
+      <div>
+        <VictoryChart
+          polar
+          animate={{ duration: 500, onLoad: { duration: 500 } }}
+          theme={VictoryTheme.material}
+          innerRadius={innerRadius}
+          domainPadding={{ y: 10 }}
+          events={[
+            {
+              childName: "all",
+              target: "data",
+              eventHandlers: {
+                onMouseOver: () => {
+                  return [
+                    { target: "labels", mutation: () => ({ active: true }) },
+                    { target: "data", mutation: () => ({ active: true }) }
+                  ];
+                },
+                onMouseOut: () => {
+                  return [
+                    { target: "labels", mutation: () => ({ active: false }) },
+                    { target: "data", mutation: () => ({ active: false }) }
+                  ];
+                }
               }
             }
-          }
-        ]}
-      >
-        <VictoryPolarAxis
-          dependentAxis
-          labelPlacement="vertical"
-          style={{ axis: { stroke: "none" } }}
-          tickFormat={() => ""}
-        />
-        <VictoryPolarAxis
-          labelPlacement="parallel"
-          tickValues={Object.keys(directions).map(k => +k)}
-          tickFormat={Object.values(directions)}
-        />
-        <VictoryStack>
-          <VictoryBar
-            style={{
-              data: {
-                fill: a => (a ? orange.highlight : orange.base),
-                width: 40
-              }
-            }}
-            data={this.state.windNew}
-            x="windBearing"
-            y="windSpeed"
-            labels={() => ""}
-            labelComponent={<CenterLabel color={orange} />}
+          ]}
+        >
+          {this.props.homeState.weatherLocation.latLong !== undefined
+            ? this.getWindDataFromUnderground()
+            : undefined}
+
+          <VictoryPolarAxis
+            dependentAxis
+            labelPlacement="vertical"
+            style={{ axis: { stroke: "none" } }}
+            tickFormat={() => ""}
           />
-          {/* <VictoryBar
+          <VictoryPolarAxis
+            labelPlacement="parallel"
+            tickValues={Object.keys(directions).map(k => +k)}
+            tickFormat={Object.values(directions)}
+          />
+          <VictoryStack>
+            <VictoryBar
+              style={{
+                data: {
+                  fill: a => (a ? orange.highlight : orange.base),
+                  width: 40
+                }
+              }}
+              data={this.state.windNew}
+              x="windBearing"
+              y="windSpeed"
+              labels={() => ""}
+              labelComponent={<CenterLabel color={orange} />}
+            />
+            {/* <VictoryBar
             style={{
               data: {
                 fill: (d, a) => (a ? red.highlight : red.base),
@@ -235,9 +264,18 @@ export default class DayInTheLife extends React.Component {
             labels={() => ""}
             labelComponent={<CenterLabel color={red} />}
           /> */}
-        </VictoryStack>
-        <CompassCenter />
-      </VictoryChart>
+          </VictoryStack>
+          <CompassCenter />
+        </VictoryChart>
+        <Button
+          onClick={this.handleRefresh}
+          style={{ margin: "2em" }}
+          variant="raised"
+          color="primary"
+        >
+          Update Data
+        </Button>
+      </div>
     );
   }
 }

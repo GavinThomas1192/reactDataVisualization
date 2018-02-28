@@ -34,14 +34,15 @@ var url_prefix =
   "https://api.darksky.net/forecast/" +
   `${process.env.DARKSKY_SECRET_KEY}` +
   "/";
-app.get("/api/darksky", function(req, res) {
+app.post("/api/darksky", function(req, res) {
+  console.log("RECIEVED DATA TO USE", req.body);
   // Retrieves location coordinates (latitude and longitude) from client request query
   var coordinates = "47.6062,-122.3321";
   var url = url_prefix + coordinates;
   console.log("Fetching " + url);
 
   axios.get(url).then(retrievedDataFromDarkSky => {
-    console.log(retrievedDataFromDarkSky.data);
+    // console.log(retrievedDataFromDarkSky.data);
     res.status(200);
     res.send(retrievedDataFromDarkSky.data);
   });

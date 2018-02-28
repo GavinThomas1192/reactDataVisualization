@@ -13,7 +13,8 @@ class App extends Component {
     super(props);
     this.state = {
       weatherData: "",
-      weatherLocation: ""
+      weatherLocation: "",
+      start: false
     };
   }
 
@@ -22,7 +23,7 @@ class App extends Component {
   };
 
   updateHomeLocation = data => {
-    this.setState({ weatherLocation: data });
+    this.setState({ weatherLocation: data, start: true });
   };
 
   componentDidUpdate() {
@@ -39,7 +40,7 @@ class App extends Component {
         <div className="polarChartContainer">
           {this.state.weatherLocation !== "" ? (
             <p className="App-intro">
-              Current weather for {this.state.weatherLocation.location}.
+              Current weather for {this.state.weatherLocation.name}.
             </p>
           ) : (
             <p>No Location chosen yet!</p>
@@ -50,7 +51,11 @@ class App extends Component {
               <LocationPicker updateHomeLocation={this.updateHomeLocation} />
             </Grid>
             <Grid item xs={6}>
-              <DayInTheLife updateHomeWeather={this.updateHomeWeather} />
+              <DayInTheLife
+                location={this.state.weatherLocation.latLong}
+                updateHomeWeather={this.updateHomeWeather}
+                homeState={this.state}
+              />
             </Grid>
             <Grid item xs>
               <p>Info</p>
