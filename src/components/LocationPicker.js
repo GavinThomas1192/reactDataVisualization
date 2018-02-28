@@ -31,7 +31,7 @@ export default class LocationPicker extends React.Component {
 
   handleSubmit = () => {
     {
-      this.state.locationError !== "" && this.state.location !== ""
+      this.state.locationError == "" && this.state.location !== ""
         ? this.props.updateHomeLocation(this.state)
         : alert("Please enter valid zip code!");
     }
