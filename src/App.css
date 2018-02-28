@@ -33,6 +33,7 @@
 
 .polarChartContainer {
   text-align: center;
+  margin: 5em;
 }
 
 @keyframes App-logo-spin {

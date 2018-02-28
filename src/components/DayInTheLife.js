@@ -67,13 +67,24 @@ class CenterLabel extends React.Component {
 export default class DayInTheLife extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { wind: this.getWindData() };
+    this.state = {
+      wind: this.getWindData(),
+      windNew: [],
+      windSpeed: "",
+      windBearing: "",
+      windGust: ""
+    };
   }
 
   componentDidMount() {
     this.setStateInterval = window.setInterval(() => {
-      this.setState({ wind: this.getWindData() });
+      this.setState({ wind: this.getWindData() }, function() {
+        console.log("state after getWindData", this.state);
+      });
     }, 10000);
+  }
+
+  componentWillMount() {
     this.getWindDataFromUnderground();
   }
 
@@ -81,7 +92,65 @@ export default class DayInTheLife extends React.Component {
     axios
       .get("http://localhost:3001/api/darksky")
       .then(response => {
-        console.log("this is the response from my express server", response);
+        console.log(
+          "this is the response from my express server",
+          response.data.currently.windSpeed,
+          response.data.currently.windBearing
+        );
+        this.setState(
+          {
+            windSpeed: response.data.currently.windSpeed,
+            windBearing: response.data.currently.windBearing,
+            windGust: response.data.currently.windSpeed,
+            windNew: [
+              ...this.state.windNew,
+              {
+                windSpeed: response.data.currently.windSpeed,
+                windGust: response.data.currently.windSpeed + 0.02,
+                windBearing: response.data.currently.windBearing
+              },
+              {
+                windSpeed: response.data.currently.windSpeed,
+                windGust: response.data.currently.windSpeed + 0.02,
+                windBearing: 45
+              },
+              {
+                windSpeed: response.data.currently.windSpeed,
+                windGust: response.data.currently.windSpeed + 0.02,
+                windBearing: 90
+              },
+              {
+                windSpeed: response.data.currently.windSpeed,
+                windGust: response.data.currently.windSpeed + 0.02,
+                windBearing: 135
+              },
+              {
+                windSpeed: response.data.currently.windSpeed,
+                windGust: response.data.currently.windSpeed + 0.02,
+                windBearing: 180
+              },
+              {
+                windSpeed: response.data.currently.windSpeed,
+                windGust: response.data.currently.windSpeed + 0.02,
+                windBearing: 225
+              },
+              {
+                windSpeed: response.data.currently.windSpeed,
+                windGust: response.data.currently.windSpeed + 0.02,
+                windBearing: 270
+              },
+              {
+                windSpeed: response.data.currently.windSpeed,
+                windGust: response.data.currently.windSpeed + 0.02,
+                windBearing: 315
+              }
+            ]
+          },
+          function() {
+            console.log("updated state from my express server", this.state);
+            this.props.updateHomeWeather(response.data);
+          }
+        );
       })
       .catch(function(error) {
         console.log(error);
@@ -143,17 +212,17 @@ export default class DayInTheLife extends React.Component {
           <VictoryBar
             style={{
               data: {
-                fill: (d, a) => (a ? orange.highlight : orange.base),
+                fill: a => (a ? orange.highlight : orange.base),
                 width: 40
               }
             }}
-            data={this.state.wind}
+            data={this.state.windNew}
             x="windBearing"
             y="windSpeed"
             labels={() => ""}
             labelComponent={<CenterLabel color={orange} />}
           />
-          <VictoryBar
+          {/* <VictoryBar
             style={{
               data: {
                 fill: (d, a) => (a ? red.highlight : red.base),
@@ -165,7 +234,7 @@ export default class DayInTheLife extends React.Component {
             y={d => d.windGust - d.windSpeed}
             labels={() => ""}
             labelComponent={<CenterLabel color={red} />}
-          />
+          /> */}
         </VictoryStack>
         <CompassCenter />
       </VictoryChart>
