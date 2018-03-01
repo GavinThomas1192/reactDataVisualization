@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import DayInTheLife from "../src/components/DayInTheLife";
-import FloatingActionButtonZoom from "../src/components/InfoDisplay";
+import InfoDisplay from "../src/components/InfoDisplay";
 import axios from "axios";
 import LocationPicker from "../src/components/LocationPicker";
 import RadarChart from "../src/components/RadarChart";
@@ -38,20 +38,14 @@ class App extends Component {
           )}
           <Grid container spacing={24}>
             <Grid item xs>
-              <p>Settings</p>
+              <p>Pick your location</p>
               <LocationPicker />
             </Grid>
             <Grid item xs={6}>
               <DayInTheLife />
             </Grid>
             <Grid item xs>
-              <p>Info</p>
-              {this.props.weather.daily !== undefined ? (
-                <h2>{this.props.weather.daily.summary}</h2>
-              ) : (
-                undefined
-              )}
-              {/* <FloatingActionButtonZoom /> */}
+              <InfoDisplay />
             </Grid>
           </Grid>
         </div>

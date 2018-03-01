@@ -1,157 +1,158 @@
 import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
-import SwipeableViews from "react-swipeable-views";
+import { connect } from "react-redux";
 import { withStyles } from "material-ui/styles";
 import AppBar from "material-ui/AppBar";
 import Tabs, { Tab } from "material-ui/Tabs";
 import Typography from "material-ui/Typography";
-import Zoom from "material-ui/transitions/Zoom";
-import Button from "material-ui/Button";
-// import AddIcon from "material-ui-icons/add";
-import Icon from "material-ui/Icon";
-
-// import EditIcon from "material-ui-icons/modeedit";
-// import UpIcon from "material-ui-icons/keyboardarrowup";
-import green from "material-ui/colors/green";
+import List, { ListItem, ListItemIcon, ListItemText } from "material-ui/List";
 
 function TabContainer(props) {
-  const { children, dir } = props;
-
   return (
-    <Typography
-      component="div"
-      dir={dir}
-      style={{
-        padding: 8 * 3
-      }}
-    >
-      {" "}
-      {children}{" "}
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {props.children}
     </Typography>
   );
 }
 
 TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  dir: PropTypes.string.isRequired
+  children: PropTypes.node.isRequired
 };
 
 const styles = theme => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
-    width: 500,
-    position: "relative",
-    minHeight: 200
-  },
-  fab: {
-    position: "absolute",
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2
-  },
-  fabGreen: {
-    color: theme.palette.common.white,
-    backgroundColor: green[500]
+    flexGrow: 1,
+    marginTop: theme.spacing.unit * 3,
+    backgroundColor: theme.palette.background.paper
   }
 });
 
-class FloatingActionButtonZoom extends React.Component {
+class InfoDisplay extends React.Component {
   state = {
-    value: 0
+    value: "one"
   };
 
   handleChange = (event, value) => {
-    this.setState({
-      value
-    });
-  };
-
-  handleChangeIndex = index => {
-    this.setState({
-      value: index
-    });
+    this.setState({ value });
   };
 
   render() {
-    const { classes, theme } = this.props;
-    const transitionDuration = {
-      enter: theme.transitions.duration.enteringScreen,
-      exit: theme.transitions.duration.leavingScreen
-    };
-
-    const fabs = [
-      {
-        color: "primary",
-        className: classes.fab,
-        icon: "add_circle"
-      },
-      {
-        color: "secondary",
-        className: classes.fab,
-        icon: "mode_edit"
-      },
-      {
-        color: "inherit",
-        className: classNames(classes.fab, classes.fabGreen),
-        icon: "keyboard_arrow_up"
-      }
-    ];
+    const { classes } = this.props;
+    const { value } = this.state;
 
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={this.state.value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            fullWidth
-          >
-            <Tab label="Item One" />
-            <Tab label="Item Two" />
-            <Tab label="Item Three" />
-          </Tabs>{" "}
-        </AppBar>{" "}
-        <SwipeableViews
-          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-          index={this.state.value}
-          onChangeIndex={this.handleChangeIndex}
-        >
-          <TabContainer dir={theme.direction}> Item One </TabContainer>{" "}
-          <TabContainer dir={theme.direction}> Item Two </TabContainer>{" "}
-          <TabContainer dir={theme.direction}> Item Three </TabContainer>{" "}
-        </SwipeableViews>{" "}
-        {fabs.map((fab, index) => (
-          <Zoom
-            key={fab.color}
-            in={this.state.value === index}
-            timeout={transitionDuration}
-            style={{
-              transitionDelay:
-                this.state.value === index ? transitionDuration.exit : 0
-            }}
-            unmountOnExit
-          >
-            <Button variant="fab" className={fab.className} color={fab.color}>
-              {" "}
-              {fab.icon}{" "}
-            </Button>{" "}
-            <Icon varient="fab" color="primary" className={fab.className}>
-              {" "}
-              {fab.icon}{" "}
-            </Icon>{" "}
-          </Zoom>
-        ))}{" "}
+        <AppBar position="static">
+          <Tabs value={value} onChange={this.handleChange}>
+            <Tab value="one" label="Summary" />
+            <Tab value="two" label="Hourly" />
+            <Tab value="three" label="Item Three" />
+          </Tabs>
+        </AppBar>
+        {value === "one" && (
+          <TabContainer>
+            {this.props.weather.daily !== undefined
+              ? this.props.weather.daily.summary
+              : "No Data"}
+          </TabContainer>
+        )}
+        {value === "two" && (
+          <TabContainer>
+            {this.props.weather.hourly !== undefined ? (
+              <div>
+                <List component="nav">
+                  {this.props.weather.hourly.data.map(ele => {
+                    console.log("eles", ele);
+                    return (
+                      <ListItem button>
+                        <ListItemText primary={ele.time} />
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              </div>
+            ) : (
+              "No data"
+            )}
+            }
+          </TabContainer>
+        )}
+        {value === "three" && <TabContainer>Item Three</TabContainer>}
       </div>
     );
   }
 }
 
-FloatingActionButtonZoom.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
-};
+{
+  /* <p>Info</p>
+              {this.props.weather.daily !== undefined ? (
+                <h2>{this.props.weather.daily.summary}</h2>
+              ) : (
+                undefined
+              )} */
+}
 
-export default withStyles(styles, {
-  withTheme: true
-})(FloatingActionButtonZoom);
+// export default withStyles(styles)(InfoDisplay);
+let mapStateToProps = state => ({
+  location: state.location,
+  weather: state.weather
+});
+
+let mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(InfoDisplay)
+);
+
+// :
+// apparentTemperature
+// :
+// 33.36
+// cloudCover
+// :
+// 0.46
+// dewPoint
+// :
+// 34.35
+// humidity
+// :
+// 0.92
+// icon
+// :
+// "partly-cloudy-night"
+// ozone
+// :
+// 459.15
+// precipIntensity
+// :
+// 0
+// precipProbability
+// :
+// 0
+// pressure
+// :
+// 1002.18
+// summary
+// :
+// "Partly Cloudy"
+// temperature
+// :
+// 36.34
+// time
+// :
+// 1519912800
+// uvIndex
+// :
+// 0
+// visibility
+// :
+// 6.88
+// windBearing
+// :
+// 167
+// windGust
+// :
+// 4.25
+// windSpeed
+// :
+// 3.74
