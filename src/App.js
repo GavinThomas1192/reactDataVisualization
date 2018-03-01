@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import DayInTheLife from "../src/components/DayInTheLife";
 import InfoDisplay from "../src/components/InfoDisplay";
+import Map from "../src/components/TestMap";
 import axios from "axios";
 import LocationPicker from "../src/components/LocationPicker";
 import RadarChart from "../src/components/RadarChart";
@@ -50,7 +51,8 @@ class App extends Component {
           </Grid>
         </div>
         <div>
-          <RadarChart />
+          <Map />
+          {/* <RadarChart /> */}
         </div>
       </div>
     );

@@ -6,6 +6,24 @@ import AppBar from "material-ui/AppBar";
 import Tabs, { Tab } from "material-ui/Tabs";
 import Typography from "material-ui/Typography";
 import List, { ListItem, ListItemIcon, ListItemText } from "material-ui/List";
+import {
+  VictoryChart,
+  VictoryGroup,
+  VictoryStack,
+  VictoryBar,
+  Bar
+} from "victory";
+
+const handleMouseOver = () => {
+  const fillColor = this.state.clicked ? "blue" : "tomato";
+  const clicked = !this.state.clicked;
+  this.setState({
+    clicked,
+    style: {
+      data: { fill: fillColor }
+    }
+  });
+};
 
 function TabContainer(props) {
   return (
@@ -60,7 +78,7 @@ class InfoDisplay extends React.Component {
           <TabContainer>
             {this.props.weather.hourly !== undefined ? (
               <div>
-                <List component="nav">
+                {/* <List component="nav">
                   {this.props.weather.hourly.data.map(ele => {
                     console.log("eles", ele);
                     return (
@@ -69,7 +87,26 @@ class InfoDisplay extends React.Component {
                       </ListItem>
                     );
                   })}
-                </List>
+                </List> */}
+                <VictoryChart
+                  height={400}
+                  width={400}
+                  domainPadding={{ x: 50, y: [0, 20] }}
+                  scale={{ x: "time" }}
+                >
+                  <VictoryBar
+                    dataComponent={
+                      <Bar events={{ onMouseOver: handleMouseOver }} />
+                    }
+                    style={this.state.style}
+                    data={[
+                      { x: "0000", y: 2 },
+                      { x: "0100", y: 3 },
+                      { x: "0200", y: 5 },
+                      { x: "0300", y: 4 }
+                    ]}
+                  />
+                </VictoryChart>
               </div>
             ) : (
               "No data"
