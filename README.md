@@ -6,7 +6,9 @@
 
 ## In a different terminal
 
-## `cd server`
+## `~./cd server`
+
+## `npm install`
 
 ## `npm run start`
 
