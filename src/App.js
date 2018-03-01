@@ -24,36 +24,37 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">React Data Visualization</h1>
-        </header>
-        <div className="polarChartContainer">
-          {this.props.location.name !== undefined ? (
-            <p className="App-intro">
-              Current weather for {this.props.location.name}.
-            </p>
-          ) : (
-            <p>No Location chosen yet!</p>
-          )}
-          <Grid container spacing={24}>
-            <Grid item xs>
-              <p>Pick your location</p>
-              <LocationPicker />
-            </Grid>
-            <Grid item xs={6}>
-              <DayInTheLife />
-            </Grid>
-            <Grid item xs>
-              <InfoDisplay />
+      <div>
+        <Grid className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">React Data Visualization</h1>
+          </header>
+          <Grid className="polarChartContainer">
+            {this.props.location.name !== undefined ? (
+              <p className="App-intro">
+                Current weather for {this.props.location.name}.
+              </p>
+            ) : (
+              <p>No Location chosen yet!</p>
+            )}
+            <div style={{ textAlign: "center" }} />
+            <Grid container spacing={24}>
+              <Grid item xs>
+                <p>Pick your location</p>
+                <LocationPicker />
+              </Grid>
+              <Grid item xs={8} />
+              <Map />
+              <Grid item xs>
+                <InfoDisplay />
+              </Grid>
             </Grid>
           </Grid>
-        </div>
-        <div>
-          <Map />
-          {/* <RadarChart /> */}
-        </div>
+          <div style={{ maxWidth: "25%", maxHeight: "25%" }}>
+            <DayInTheLife />
+          </div>
+        </Grid>
       </div>
     );
   }

@@ -15,18 +15,6 @@ class TestMap extends React.Component {
       dynamicZoom: 1
     };
   }
-  componentDidMount() {}
-  componentDidUpdate() {
-    // console.log("app updated", this.state);
-    // try {
-    //   console.log("map updated");
-    //   this.map.state.map.flyTo({
-    //     center: [this.props.weather.longitude, this.props.weather.latitude]
-    //   });
-    // } catch (error) {
-    //   console.log("no map yet", error);
-    // }
-  }
 
   componentWillReceiveProps(nextProps) {
     // console.log("********************", nextProps, nextProps.weather.length);
@@ -41,45 +29,23 @@ class TestMap extends React.Component {
   }
   render() {
     return (
-      <div>
-        {/* {this.props.weather.latitude !== undefined ? ( */}
-        <Map
-          ref={e => {
-            this.map = e;
-          }}
-          style="mapbox://styles/mapbox/streets-v9"
-          containerStyle={{
-            height: "100vh",
-            width: "100vw"
-          }}
-          center={[this.state.longitude, this.state.latitude]}
-          zoom={[this.state.dynamicZoom]}
-        >
-          <Layer
-            type="symbol"
-            id="marker"
-            layout={{ "icon-image": "marker-15" }}
-          >
-            {/* <Feature coordinates={[2.2137, 46.22276]} /> */}
-          </Layer>
-        </Map>
-        {/* ) : (
-          <h1>NO location data yet.</h1>
-        )} */}
-      </div>
-
-      //       // fly with default options to null island
-      // map.flyTo({center: [0, 0], zoom: 9});
-      // // using flyTo options
-      // map.flyTo({
-      //   center: [0, 0],
-      //   zoom: 9,
-      //   speed: 0.2,
-      //   curve: 1,
-      //   easing(t) {
-      //     return t;
-      //   }
-      // });
+      <Map
+        ref={e => {
+          this.map = e;
+        }}
+        style="mapbox://styles/mapbox/streets-v9"
+        containerStyle={{
+          height: "75vh",
+          width: "75vw",
+          margin: "auto"
+        }}
+        center={[this.state.longitude, this.state.latitude]}
+        zoom={[this.state.dynamicZoom]}
+      >
+        <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
+          {/* <Feature coordinates={[2.2137, 46.22276]} /> */}
+        </Layer>
+      </Map>
     );
   }
 }

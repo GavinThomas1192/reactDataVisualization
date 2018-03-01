@@ -10,6 +10,7 @@
 
 ## `npm run start`
 
+<img src="./src/img/map.gif" width="500px">
 <img src="./src/img/home.png" width="500px">
 <img src="./src/img/fallout.png" width="500px">
 
