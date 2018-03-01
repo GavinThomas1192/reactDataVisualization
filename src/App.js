@@ -3,11 +3,11 @@ import logo from "./logo.svg";
 import "./App.css";
 import DayInTheLife from "../src/components/DayInTheLife";
 import FloatingActionButtonZoom from "../src/components/InfoDisplay";
-
+import axios from "axios";
 import LocationPicker from "../src/components/LocationPicker";
 import RadarChart from "../src/components/RadarChart";
 import Grid from "material-ui/Grid";
-
+import { connect } from "react-redux";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,17 +17,8 @@ class App extends Component {
       start: false
     };
   }
-
-  updateHomeWeather = data => {
-    this.setState({ weatherData: data });
-  };
-
-  updateHomeLocation = data => {
-    this.setState({ weatherLocation: data, start: true });
-  };
-
   componentDidUpdate() {
-    console.log("App updated", this.state);
+    console.log("App Updated", this.state, "PROPS", this.props);
   }
 
   render() {
@@ -38,9 +29,9 @@ class App extends Component {
           <h1 className="App-title">React Data Visualization</h1>
         </header>
         <div className="polarChartContainer">
-          {this.state.weatherLocation !== "" ? (
+          {this.props.location.name !== undefined ? (
             <p className="App-intro">
-              Current weather for {this.state.weatherLocation.name}.
+              Current weather for {this.props.location.name}.
             </p>
           ) : (
             <p>No Location chosen yet!</p>
@@ -48,19 +39,15 @@ class App extends Component {
           <Grid container spacing={24}>
             <Grid item xs>
               <p>Settings</p>
-              <LocationPicker updateHomeLocation={this.updateHomeLocation} />
+              <LocationPicker />
             </Grid>
             <Grid item xs={6}>
-              <DayInTheLife
-                location={this.state.weatherLocation.latLong}
-                updateHomeWeather={this.updateHomeWeather}
-                homeState={this.state}
-              />
+              <DayInTheLife />
             </Grid>
             <Grid item xs>
               <p>Info</p>
-              {this.state.weatherData !== "" ? (
-                <h2>{this.state.weatherData.daily.summary}</h2>
+              {this.props.weather.daily !== undefined ? (
+                <h2>{this.props.weather.daily.summary}</h2>
               ) : (
                 undefined
               )}
@@ -76,4 +63,11 @@ class App extends Component {
   }
 }
 
-export default App;
+let mapStateToProps = state => ({
+  location: state.location,
+  weather: state.weather
+});
+
+let mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

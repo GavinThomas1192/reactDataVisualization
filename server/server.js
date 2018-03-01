@@ -37,7 +37,7 @@ var url_prefix =
 app.post("/api/darksky", function(req, res) {
   console.log("RECIEVED DATA TO USE", req.body);
   // Retrieves location coordinates (latitude and longitude) from client request query
-  var coordinates = "47.6062,-122.3321";
+  var coordinates = `${req.body.lat}, ${req.body.long}`;
   var url = url_prefix + coordinates;
   console.log("Fetching " + url);
 

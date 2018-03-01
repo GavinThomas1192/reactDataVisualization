@@ -10,7 +10,8 @@ import {
   VictoryStack
 } from "victory";
 import Button from "material-ui/Button";
-
+import { connect } from "react-redux";
+import { getWindData } from "../Actions/weather-actions";
 const directions = {
   0: "E",
   45: "NE",
@@ -52,7 +53,7 @@ class CompassCenter extends React.Component {
 class CenterLabel extends React.Component {
   render() {
     const { datum, active, color } = this.props;
-    const text = [`${directions[datum._x]}`, `${Math.round(datum._y1)} mph`];
+    const text = [`${Math.round(datum._y1)} mph`];
     const baseStyle = { fill: color.highlight, textAnchor: "middle" };
     const style = [
       { ...baseStyle, fontSize: 18, fontWeight: "bold" },
@@ -65,11 +66,10 @@ class CenterLabel extends React.Component {
   }
 }
 
-export default class DayInTheLife extends React.Component {
+class DayInTheLife extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      wind: this.getWindData(),
       windNew: [],
       windSpeed: "",
       windBearing: "",
@@ -79,7 +79,52 @@ export default class DayInTheLife extends React.Component {
   }
 
   componentDidMount() {
-    console.log("DayInTheLife did mount", this.props);
+    console.log("DayInTheLife did mount", this.state, "PROPS", this.props);
+    {
+      this.state.windNew.length === 0
+        ? this.setState({
+            windNew: [
+              ...this.state.windNew,
+
+              {
+                windSpeed: 0,
+                windGust: 0 + 0.02,
+                windBearing: 45
+              },
+              {
+                windSpeed: 0,
+                windGust: 0 + 0.02,
+                windBearing: 90
+              },
+              {
+                windSpeed: 0,
+                windGust: 0 + 0.02,
+                windBearing: 135
+              },
+              {
+                windSpeed: 0,
+                windGust: 0 + 0.02,
+                windBearing: 180
+              },
+              {
+                windSpeed: 0,
+                windGust: 0 + 0.02,
+                windBearing: 225
+              },
+              {
+                windSpeed: 0,
+                windGust: 0 + 0.02,
+                windBearing: 270
+              },
+              {
+                windSpeed: 0,
+                windGust: 0 + 0.02,
+                windBearing: 315
+              }
+            ]
+          })
+        : undefined;
+    }
 
     // this.setStateInterval = window.setInterval(() => {
     //   this.getWindDataFromUnderground();
@@ -87,110 +132,37 @@ export default class DayInTheLife extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log("DayInTheLife update", this.props);
+    console.log("DayInTheLife update", this.state, "PROPS", this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    // {
-    //   nextProps.start
-    //     ? this.setState({ homeState: nextProps.homeState })
-    //     : undefined;
-    // }
-    // console.log("NEXTPROPS", nextProps);
+    console.log("day recieved props", nextProps);
+    try {
+      this.setState(
+        {
+          windNew: [
+            {
+              windSpeed: nextProps.weather.currently.windSpeed,
+              windGust: nextProps.weather.currently.windSpeed + 0.02,
+              windBearing: nextProps.weather.currently.windBearing
+            },
+            ...this.state.windNew
+          ]
+        },
+        () => {
+          console.log("updated state with store props", this.state);
+        }
+      );
+    } catch (error) {
+      return console.log("cant set nextprops", error);
+    }
   }
 
   handleRefresh = () => {
     console.log("refreshed");
   };
-  getWindDataFromUnderground = () => {
-    axios
-      .post("http://localhost:3001/api/darksky", {
-        lat: this.props.homeState.weatherLocation.latLong.lat,
-        long: this.props.homeState.weatherLocation.latLong.lng
-      })
-      .then(response => {
-        console.log(
-          "this is the response from my express server",
-          response.data.currently.windSpeed,
-          response.data.currently.windBearing
-        );
-        {
-          this.state.windNew.length === 0
-            ? this.setState(
-                {
-                  windSpeed: response.data.currently.windSpeed,
-                  windBearing: response.data.currently.windBearing,
-                  windGust: response.data.currently.windSpeed,
-                  windNew: [
-                    ...this.state.windNew,
-                    {
-                      windSpeed: response.data.currently.windSpeed,
-                      windGust: response.data.currently.windSpeed + 0.02,
-                      windBearing: response.data.currently.windBearing
-                    },
-                    {
-                      windSpeed: response.data.currently.windSpeed,
-                      windGust: response.data.currently.windSpeed + 0.02,
-                      windBearing: 45
-                    },
-                    {
-                      windSpeed: response.data.currently.windSpeed,
-                      windGust: response.data.currently.windSpeed + 0.02,
-                      windBearing: 90
-                    },
-                    {
-                      windSpeed: response.data.currently.windSpeed,
-                      windGust: response.data.currently.windSpeed + 0.02,
-                      windBearing: 135
-                    },
-                    {
-                      windSpeed: response.data.currently.windSpeed,
-                      windGust: response.data.currently.windSpeed + 0.02,
-                      windBearing: 180
-                    },
-                    {
-                      windSpeed: response.data.currently.windSpeed,
-                      windGust: response.data.currently.windSpeed + 0.02,
-                      windBearing: 225
-                    },
-                    {
-                      windSpeed: response.data.currently.windSpeed,
-                      windGust: response.data.currently.windSpeed + 0.02,
-                      windBearing: 270
-                    },
-                    {
-                      windSpeed: response.data.currently.windSpeed,
-                      windGust: response.data.currently.windSpeed + 0.02,
-                      windBearing: 315
-                    }
-                  ]
-                },
-                function() {
-                  console.log(
-                    "updated state from my express server",
-                    this.state
-                  );
-                  this.props.updateHomeWeather(response.data);
-                }
-              )
-            : undefined;
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    // https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid={api_key}
-  };
-  getWindData() {
-    return Object.keys(directions).map(d => {
-      const speed = Math.floor(Math.random() * 17) + 4;
-      return {
-        windSpeed: speed,
-        windGust: speed + Math.random(2, 10),
-        windBearing: +d
-      };
-    });
-  }
+
+  getWindDataFromUnderground = () => {};
 
   render() {
     return (
@@ -222,10 +194,6 @@ export default class DayInTheLife extends React.Component {
             }
           ]}
         >
-          {this.props.homeState.weatherLocation.latLong !== undefined
-            ? this.getWindDataFromUnderground()
-            : undefined}
-
           <VictoryPolarAxis
             dependentAxis
             labelPlacement="vertical"
@@ -280,4 +248,13 @@ export default class DayInTheLife extends React.Component {
   }
 }
 
-// ReactDOM.render(<App />, mountNode);
+let mapStateToProps = state => ({
+  location: state.location,
+  weather: state.weather
+});
+
+let mapDispatchToProps = dispatch => ({
+  getWindData: () => dispatch(getWindData())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DayInTheLife);

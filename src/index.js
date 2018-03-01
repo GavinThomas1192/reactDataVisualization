@@ -1,8 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import registerServiceWorker from "./registerServiceWorker";
+import { Provider } from "react-redux";
+import appCreateStore from "./lib/app-create-store";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+let store = appCreateStore();
+
+class AppContainer extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+  }
+}
+
+ReactDOM.render(<AppContainer />, document.getElementById("root"));
 registerServiceWorker();
