@@ -1,24 +1,26 @@
 import React from "react";
-import ReactMapGL from "react-map-gl";
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 
-class Map extends React.Component {
-  state = {
-    viewport: {
-      width: 400,
-      height: 400,
-      latitude: 37.7577,
-      longitude: -122.4376,
-      zoom: 8
-    }
-  };
+const Map = ReactMapboxGl({
+  accessToken:
+    "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A"
+});
 
+class TestMap extends React.Component {
   render() {
     return (
-      <ReactMapGL
-        {...this.state.viewport}
-        onViewportChange={viewport => this.setState({ viewport })}
-      />
+      <Map
+        style="mapbox://styles/mapbox/streets-v9"
+        containerStyle={{
+          height: "100vh",
+          width: "100vw"
+        }}
+      >
+        <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
+          <Feature coordinates={[-0.481747846041145, 51.3233379650232]} />
+        </Layer>
+      </Map>
     );
   }
 }
-export default Map;
+export default TestMap;
