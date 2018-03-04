@@ -39,6 +39,8 @@
 
 ### Firebase hosting
 
+* Firebase hosting url = https://reactdatavisualization.firebaseapp.com
+
 * Firebase functions api server proxy = https://us-central1-reactdatavisualization.cloudfunctions.net/api3
 * A GET to https://us-central1-reactdatavisualization.cloudfunctions.net/api3/test Should return
 
