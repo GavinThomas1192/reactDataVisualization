@@ -1,0 +1,39 @@
+[debug] [2018-03-04T19:42:55.988Z] ----------------------------------------------------------------------
+[debug] [2018-03-04T19:42:55.991Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2018-03-04T19:42:55.991Z] CLI Version:   3.17.4
+[debug] [2018-03-04T19:42:55.992Z] Platform:      darwin
+[debug] [2018-03-04T19:42:55.992Z] Node Version:  v8.1.2
+[debug] [2018-03-04T19:42:55.992Z] Time:          Sun Mar 04 2018 11:42:55 GMT-0800 (PST)
+[debug] [2018-03-04T19:42:55.992Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-03-04T19:42:56.009Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-03-04T19:42:56.010Z] > authorizing via signed-in user
+[debug] [2018-03-04T19:42:56.015Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/reactdatavisualization  
+  
+ Sun Mar 04 2018 11:42:56 GMT-0800 (PST)
+[debug] [2018-03-04T19:42:57.281Z] <<< HTTP RESPONSE 200
+[debug] [2018-03-04T19:42:57.282Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/reactdatavisualization/tokens  
+  
+ Sun Mar 04 2018 11:42:57 GMT-0800 (PST)
+[debug] [2018-03-04T19:43:11.515Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'reactdatavisualization'...
+[info] 
+[info] i  deploying database, storage, functions, hosting
+[info] Running command: npm --prefix $RESOURCE_DIR run lint
+[info] ✔  functions: Finished running predeploy script.
+[info] i  database: checking rules syntax...
+[debug] [2018-03-04T19:43:14.464Z] >>> HTTP REQUEST PUT https://reactdatavisualization.firebaseio.com/.settings/rules.json?dryRun=true  
+ {
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
+ 
+ Sun Mar 04 2018 11:43:14 GMT-0800 (PST)
+[debug] [2018-03-04T19:43:14.764Z] <<< HTTP RESPONSE 200
+[info] ✔  database: rules syntax for database reactdatavisualization is valid
+[debug] [2018-03-04T19:43:14.767Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/reactdatavisualization  
+  
+ Sun Mar 04 2018 11:43:14 GMT-0800 (PST)

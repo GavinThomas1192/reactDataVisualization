@@ -37,20 +37,9 @@
 
   * REACT_APP_MAP_BOX_TOKEN='mapBoxTokenKeyHere'
 
-function greet (person) {
-if (person == { name: 'amy' }) {
-return 'hey amy'
-} else {
-return 'hey arnold'
-}
-}
-greet({ name: 'amy' })
+### Firebase hosting
 
-let dog = {
-name: 'doggo',
-sayName () {
-console.log(this.name)
-}
-}
-let sayName = dog.sayName
-sayName()
+* Firebase functions api server proxy = https://us-central1-reactdatavisualization.cloudfunctions.net/api3
+* A GET to https://us-central1-reactdatavisualization.cloudfunctions.net/api3/test Should return
+
+  * "Hello from Express on Firebase with CORS! No trailing '/' required!"

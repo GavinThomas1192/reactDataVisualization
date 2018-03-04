@@ -9,6 +9,8 @@ import LocationPicker from "../src/components/LocationPicker";
 import RadarChart from "../src/components/RadarChart";
 import Grid from "material-ui/Grid";
 import { connect } from "react-redux";
+import firebase from "firebase";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +19,17 @@ class App extends Component {
       weatherLocation: "",
       start: false
     };
+  }
+  componentDidMount() {
+    let config = {
+      apiKey: "AIzaSyAwIDNb3b5rBFopAuL-rGkj0W-98Ia9YAM",
+      authDomain: "reactdatavisualization.firebaseapp.com",
+      databaseURL: "https://reactdatavisualization.firebaseio.com",
+      projectId: "reactdatavisualization",
+      storageBucket: "",
+      messagingSenderId: "602382825924"
+    };
+    firebase.initializeApp(config);
   }
   componentDidUpdate() {
     console.log("App Updated", this.state, "PROPS", this.props);
