@@ -24,7 +24,7 @@ const api3 = functions.https.onRequest((request, response) => {
   return app3(request, response);
 });
 
-app3.post("/api/darksky", (req, res) => {
+app3.post("/api/darksky/superseekret", (req, res) => {
   let url_prefix = functions.config().reactdatavisualization.server.env
     .dark_sky_secret_key;
 
