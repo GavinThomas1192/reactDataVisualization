@@ -36,3 +36,21 @@
 * It should look like this
 
   * REACT_APP_MAP_BOX_TOKEN='mapBoxTokenKeyHere'
+
+function greet (person) {
+if (person == { name: 'amy' }) {
+return 'hey amy'
+} else {
+return 'hey arnold'
+}
+}
+greet({ name: 'amy' })
+
+let dog = {
+name: 'doggo',
+sayName () {
+console.log(this.name)
+}
+}
+let sayName = dog.sayName
+sayName()
