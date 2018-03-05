@@ -25,12 +25,13 @@ const api3 = functions.https.onRequest((request, response) => {
 });
 
 app3.post("/api/darksky/superseekret", (req, res) => {
-  let url_prefix = functions.config().reactdatavisualization.server.env
-    .dark_sky_secret_key;
+  let url_prefix =
+    "https://api.darksky.net/forecast/" +
+    functions.config().reactdatavisualization.server.env.dark_sky_secret_key;
 
   console.log("RECIEVED DATA TO USE, INSIDE FIREBASE FUNCTIONS", req.body);
   // Retrieves location coordinates (latitude and longitude) from client request query
-  var coordinates = `${req.body.lat}, ${req.body.long}`;
+  var coordinates = `/${req.body.lat}, ${req.body.long}`;
   var url = url_prefix + coordinates;
   console.log("Fetching " + url);
 
@@ -40,7 +41,7 @@ app3.post("/api/darksky/superseekret", (req, res) => {
       // console.log(retrievedDataFromDarkSky.data);
       return res.status(200).send(retrievedDataFromDarkSky.data);
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log("whoops something went wrong", err));
 });
 
 module.exports = {
