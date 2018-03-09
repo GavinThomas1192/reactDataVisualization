@@ -48,6 +48,32 @@ app.post("/api/darksky", function(req, res) {
   });
 });
 
+app.post("/api/getZip", function(req, res) {
+  console.log("recieved zip code...", req.body);
+  axios
+    .get(
+      `http://maps.googleapis.com/maps/api/geocode/json?address=${
+        req.body.zipCode
+      }&sensor=true`
+    )
+    .then(response => {
+      try {
+        console.log(
+          "Response from google geolocation api based on zip code",
+          response.data.results[0].geometry.location,
+          response.data.results[0].formatted_address
+        );
+        let specificGeoAdress = {
+          name: response.data.results[0].formatted_address,
+          latLong: response.data.results[0].geometry.location
+        };
+        res.send(specificGeoAdress);
+      } catch (error) {
+        return console.log("Internal server error", error);
+      }
+    });
+});
+
 // Start the server
 server.listen(port);
 console.log("Server is listening on port " + port);
