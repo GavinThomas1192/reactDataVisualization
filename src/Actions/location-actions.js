@@ -18,9 +18,14 @@ export const locationUpdate = location => ({
 
 export const getGeoLocation = zip => dispatch => {
   axios
-    .post("http://localhost:3001/api/getZip", {
-      zipCode: zip
-    })
+    //https://us-central1-reactdatavisualization.cloudfunctions.net/api3/api/getZip
+    // http://localhost:3001/api/getZip
+    .post(
+      "https://us-central1-reactdatavisualization.cloudfunctions.net/api3/api/getZip",
+      {
+        zipCode: zip
+      }
+    )
     .then(response => {
       console.log("response from server geolocation info", response);
       dispatch(locationSet(response.data));

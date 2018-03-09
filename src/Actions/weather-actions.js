@@ -24,11 +24,14 @@ export const getWindData = () => (dispatch, getState) => {
   );
   axios
     //https://us-central1-reactdatavisualization.cloudfunctions.net/api3/api/darksky/superseekret
-    // "http://localhost:5000/reactdatavisualization/us-central1/api3/api/darksky/superseekret"
-    .post("http://localhost:3001/api/darksky", {
-      lat: location.latLong.lat,
-      long: location.latLong.lng
-    })
+    // http://localhost:3001/api/darksky
+    .post(
+      "https://us-central1-reactdatavisualization.cloudfunctions.net/api3/api/darksky",
+      {
+        lat: location.latLong.lat,
+        long: location.latLong.lng
+      }
+    )
     .then(response => {
       console.log(
         "this is the response from my express server",
