@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1521598791754" clover="3.2.0">
-  <project timestamp="1521598791754" name="All files">
-    <metrics statements="451" coveredstatements="3" conditionals="159" coveredconditionals="0" methods="152" coveredmethods="1" elements="762" coveredelements="4" complexity="0" loc="451" ncloc="451" packages="6" files="21" classes="21">
+<coverage generated="1521599068728" clover="3.2.0">
+  <project timestamp="1521599068728" name="All files">
+    <metrics statements="453" coveredstatements="5" conditionals="159" coveredconditionals="0" methods="152" coveredmethods="1" elements="764" coveredelements="6" complexity="0" loc="453" ncloc="453" packages="6" files="21" classes="21">
       <package name="src">
         <metrics statements="47" coveredstatements="1" conditionals="31" coveredconditionals="0" methods="24" coveredmethods="0"/>
         <file name="App.js" path="/Users/Gavin/codefellows/postGrad/reactDataVisualization/src/App.js">
@@ -96,7 +96,7 @@
         </file>
       </package>
       <package name="src.components">
-        <metrics statements="341" coveredstatements="2" conditionals="94" coveredconditionals="0" methods="97" coveredmethods="1"/>
+        <metrics statements="343" coveredstatements="4" conditionals="94" coveredconditionals="0" methods="97" coveredmethods="1"/>
         <file name="DayInTheLife.js" path="/Users/Gavin/codefellows/postGrad/reactDataVisualization/src/components/DayInTheLife.js">
           <metrics statements="36" coveredstatements="0" conditionals="10" coveredconditionals="0" methods="24" coveredmethods="0"/>
           <line num="1" count="0" type="stmt"/>
@@ -137,9 +137,11 @@
           <line num="257" count="0" type="stmt"/>
         </file>
         <file name="Hello.js" path="/Users/Gavin/codefellows/postGrad/reactDataVisualization/src/components/Hello.js">
-          <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-          <line num="13" count="1" type="stmt"/>
-          <line num="14" count="2" type="stmt"/>
+          <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="18" count="1" type="stmt"/>
+          <line num="19" count="2" type="stmt"/>
+          <line num="22" count="1" type="stmt"/>
+          <line num="26" count="1" type="stmt"/>
         </file>
         <file name="InfoDisplay.js" path="/Users/Gavin/codefellows/postGrad/reactDataVisualization/src/components/InfoDisplay.js">
           <metrics statements="23" coveredstatements="0" conditionals="16" coveredconditionals="0" methods="9" coveredmethods="0"/>
